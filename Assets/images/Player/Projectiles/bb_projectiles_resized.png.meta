@@ -1,0 +1,135 @@
+fileFormatVersion: 2
+guid: 629a2276f36f4e445ae7638420211bcb
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: arrow_left
+    21300002: arrow_up
+    21300004: arrow_right
+    21300006: arrow_down
+    21300008: throwSpear_left
+    21300010: throwSpear_up
+    21300012: throwSpear_right
+    21300014: throwSpear_down
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: arrow_left
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 221
+        width: 46
+        height: 7
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: arrow_up
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 212
+        width: 8
+        height: 25
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: arrow_right
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 221
+        width: 46
+        height: 6
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: arrow_down
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 211
+        width: 7
+        height: 25
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: throwSpear_left
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 156
+        width: 63
+        height: 8
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: throwSpear_up
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 142
+        width: 6
+        height: 33
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: throwSpear_right
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 156
+        width: 64
+        height: 8
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: throwSpear_down
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 143
+        width: 6
+        height: 35
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
