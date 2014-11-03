@@ -23,7 +23,7 @@ public class TileMap : MonoBehaviour
 
     void LoadTileSprites()
     {
-        tileSprites = Resources.LoadAll<Sprite>("images/terrain");
+        tileSprites = Resources.LoadAll<Sprite>("images/terrain_atlas");
         tileSpriteMap = new Dictionary<string, Sprite>();
         if (tileSprites.Length == 0)
             Debug.Log("Failed to load sprites");
@@ -56,20 +56,20 @@ public class TileMap : MonoBehaviour
                 tileObject.AddComponent<Tile>();
                 tileObject.GetComponent<Tile>().Position = new Vector2(currX, currY);
                 
-                int tileInt = Random.Range(1, 3);
+                int tileInt = Random.Range(0, 3);
                 switch(tileInt)
                 {
                     case 0:
-                        tileInt = 64;
+                        tileInt = 112;
                         break;
                     case 1:
-                        tileInt = 106;
+                        tileInt = 176;
                         break;
                     case 2:
-                        tileInt = 107;
+                        tileInt = 177;
                         break;
                 }
-                string tileID = "terrain_" + 64;
+                string tileID = "terrain_atlas_" + tileInt;
                 Sprite spr = tileSpriteMap[tileID];
                 //Debug.Log(spr);
                 if (spr == null)
@@ -78,11 +78,14 @@ public class TileMap : MonoBehaviour
                     continue;
                 }
                 tileObject.GetComponent<Tile>().SetSprite(spr);
+                Debug.Log("First" + tileObject.GetComponent<SpriteRenderer>().bounds.size);
+                tileObject.GetComponent<SpriteRenderer>().bounds.size.Set(32,32,0);
+                Debug.Log(tileObject.GetComponent<SpriteRenderer>().bounds.size);
                 width = tileObject.GetComponent<SpriteRenderer>().bounds.size.x;
                 mapWidth += width;
                 height = tileObject.GetComponent<SpriteRenderer>().bounds.size.y;
                 mapHeight += height;
-                tileObject.GetComponent<Tile>().Size = new Vector2(width, height);
+                tileObject.GetComponent<Tile>().Size = new Vector2(32, 32);
                 tileMap[GetTile(row, col)] = tileObject;
                 currX += width;
 

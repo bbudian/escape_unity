@@ -204,32 +204,11 @@ public class PlayerController : MonoBehaviour
     void FireArrow(Directions direction)
     {
         animator.SetBool("Fire", true);
-        //switch (direction)
-        //{
-        //    case Directions.Left:
-        //        animator.SetBool("Fire", true);
-        //        //PauseAnimation("tanHumanMBowDrawLeft");
-        //        //PlayAnimation("tanHumanMBowReleaseLeft");
-        //        break;
-        //    case Directions.Up:
-        //        PauseAnimation("tanHumanMBowDrawUp");
-        //        PlayAnimation("tanHumanMBowReleaseUp");
-        //        break;
-        //    case Directions.Right:
-        //        PauseAnimation("tanHumanMBowDrawRight");
-        //        PlayAnimation("tanHumanMBowReleaseRight");
-        //        break;
-        //    case Directions.Down:
-        //        PauseAnimation("tanHumanMBowDrawDown");
-        //        PlayAnimation("tanHumanMBowReleaseDown");
-        //        break;
-        //    default:
-        //        break;
-        //}
     }
     bool CheckTile()
     {
-        Vector2 position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.12f);
+        float yOffset = -0.12f;
+        Vector2 position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + yOffset);
         Bounds volume = gameObject.GetComponent<SpriteRenderer>().bounds;
         if (GameObject.Find("TestMap").GetComponent<TileMap>().CheckPositionOnMap(position) == Tile.TileLayers.Impassable)
         {
