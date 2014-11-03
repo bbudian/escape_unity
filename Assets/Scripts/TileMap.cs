@@ -56,7 +56,6 @@ public class TileMap : MonoBehaviour
                 tileObject.AddComponent<Tile>();
                 tileObject.GetComponent<Tile>().Position = new Vector2(currX, currY);
                 
-               
                 int tileInt = Random.Range(1, 3);
                 switch(tileInt)
                 {
@@ -125,6 +124,24 @@ public class TileMap : MonoBehaviour
                 continue;
             Bounds tileBounds = renderer.bounds;
             if(tileBounds.Contains(new Vector3(position.x,position.y,0)))
+            {
+                return tile.Layer;
+            }
+        }
+        return Tile.TileLayers.OffMap;
+    }
+    public Tile.TileLayers CheckPositionOnMap(Bounds volume)
+    {
+        foreach (GameObject tileObj in tileMap)
+        {
+            if (tileObj == null)
+                continue;
+            Tile tile = tileObj.GetComponent<Tile>();
+            SpriteRenderer renderer = tileObj.GetComponent<SpriteRenderer>();
+            if (renderer == null)
+                continue;
+            Bounds tileBounds = renderer.bounds;
+            if (tileBounds.Intersects(volume))
             {
                 return tile.Layer;
             }

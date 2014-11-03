@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         SetCameraPos();
         if (!CheckTile())
         {
-            Debug.Log("Hit impassible tile");
+            //Debug.Log("Hit impassible tile");
             transform.position = prevPosition;
             SetCameraPos();
         }
@@ -229,12 +229,18 @@ public class PlayerController : MonoBehaviour
     }
     bool CheckTile()
     {
-        Vector2 position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        Vector2 position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.12f);
+        Bounds volume = gameObject.GetComponent<SpriteRenderer>().bounds;
         if (GameObject.Find("TestMap").GetComponent<TileMap>().CheckPositionOnMap(position) == Tile.TileLayers.Impassable)
         {
             return false;
         }
         return true;
     }
+
+    //void OnCollisionEnter(Collision collision)
+    //{
+    //    Debug.Log("collision with " + collision.ToString());
+    //}
 
 }//Class End
