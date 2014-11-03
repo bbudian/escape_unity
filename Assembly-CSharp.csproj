@@ -52,7 +52,6 @@
      <Compile Include="Assets\Scripts\Tile.cs" />
      <Compile Include="Assets\Scripts\TileMap.cs" />
      <None Include="Assets\Resources\images\Attribution.txt" />
-     <None Include="Assets\images\Attribution.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
