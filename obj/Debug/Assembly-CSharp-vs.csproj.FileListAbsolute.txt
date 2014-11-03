@@ -9,3 +9,14 @@ C:\Users\Benjamin\Documents\Escape Unity\Temp\bin\Debug\ICSharpCode.NRefactory.d
 C:\Users\Benjamin\Documents\Escape Unity\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
 C:\Users\Benjamin\Documents\Escape Unity\obj\Debug\Assembly-CSharp.dll
 C:\Users\Benjamin\Documents\Escape Unity\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\Temp\bin\Debug\Assembly-CSharp.dll
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\Temp\bin\Debug\Assembly-CSharp.pdb
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\Temp\bin\Debug\UnityEditor.dll
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\Temp\bin\Debug\UnityEngine.dll
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\Temp\bin\Debug\nunit.framework.dll
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\Temp\bin\Debug\Unity.DataContract.dll
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\obj\Debug\Assembly-CSharp.dll
+C:\Users\Benjamin\Desktop\GitHub Escape\escape_unity\obj\Debug\Assembly-CSharp.pdb

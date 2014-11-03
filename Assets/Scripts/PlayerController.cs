@@ -38,12 +38,29 @@ public class PlayerController : MonoBehaviour
         currentDirection = Directions.Down;
         race = "tanHumanM";
         isAiming = false;
+        gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "Environment";
     }
 
     // Update is called once per frame
     void Update()
     {
+        Vector3 prevPosition = transform.position;
         HandleInput();
+        SetCameraPos();
+        if (!CheckTile())
+        {
+            Debug.Log("Hit impassible tile");
+            transform.position = prevPosition;
+            SetCameraPos();
+        }
+    }
+
+    void SetCameraPos()
+    {
+        Vector3 cameraPosition = GameObject.Find("Main Camera").transform.position;
+        cameraPosition.x = transform.position.x;
+        cameraPosition.y = transform.position.y;
+        GameObject.Find("Main Camera").transform.position = cameraPosition;
     }
 
     void HandleInput()
@@ -84,7 +101,7 @@ public class PlayerController : MonoBehaviour
         {
             FireArrow(currentDirection);
         }
-        if(Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
             //if(animator.GetFloat("Exit Time") == 1.0f)
             //{
@@ -105,6 +122,12 @@ public class PlayerController : MonoBehaviour
         {
             animator.speed = 1.0f;
             movementSpeed = walkSpeed;
+        }
+
+        //Debug Keys
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GameObject.Find("TestMap").GetComponent<TileMap>().DisplayMapLayers();
         }
 
     }
@@ -203,6 +226,15 @@ public class PlayerController : MonoBehaviour
         //    default:
         //        break;
         //}
+    }
+    bool CheckTile()
+    {
+        Vector2 position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        if (GameObject.Find("TestMap").GetComponent<TileMap>().CheckPositionOnMap(position) == Tile.TileLayers.Impassable)
+        {
+            return false;
+        }
+        return true;
     }
 
 }//Class End

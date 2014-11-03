@@ -4,71 +4,9 @@ using System.Collections.Generic;
 
 public class TileMap : MonoBehaviour
 {
-
-    public enum TileLayers { Passable, DOT, Kill, Impassable }
-
-    public class Tile
-    {
-        public SpriteRenderer[] sprites;
-        TileLayers layer;
-        Vector2 size;
-
-        public Tile()
-        {
-            int defaultNumSprites = 3;
-
-            //Renders in order from lowest to highest (0-bottom -> sprites.size-top)
-            sprites = new SpriteRenderer[defaultNumSprites];
-            for (int sprite = 0; sprite < defaultNumSprites; sprite++)
-                sprites[sprite] = new SpriteRenderer();
-
-            layer = TileLayers.Passable;
-            size = new Vector2(32, 32); //Pixel size of sprite on texture
-        }
-
-        public Vector2 Size
-        {
-            get { return size; }
-            set { size = value; }
-        }
-
-        TileLayers Layer
-        {
-            get { return layer; }
-            set { layer = value; }
-        }
-
-        public void AddSprite(SpriteRenderer spriteImage, int slot)
-        {
-            try
-            {
-                sprites[slot] = spriteImage;
-            }
-            catch (System.NullReferenceException ex)
-            {
-                Debug.Log(ex.Message + "MINE");
-            }         
-        }
-
-        public SpriteRenderer GetSprite(int slot)
-        {
-            return sprites[slot];
-        }
-
-        float GetWidth()
-        {
-            return size.x;
-        }
-
-        float GetHeight()
-        {
-            return size.y;
-        }
-    }
-
-    public Tile[] tileMap;
+    public GameObject[] tileMap;
     public Sprite[] tileSprites;
-    Dictionary<string, Sprite> tileSpriteMap;
+    public Dictionary<string, Sprite> tileSpriteMap;
     int numTiles, numRows, numCols;
     Vector2 mapSize;
     float tileWidth, tileHeight, mapWidth, mapHeight;
@@ -76,8 +14,8 @@ public class TileMap : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        numRows = numCols = 4;
-        tileWidth = tileHeight = 32;
+        numRows = numCols = 40;
+        tileWidth = tileHeight = 0.5f;
         numTiles = numRows * numCols;
         LoadTileSprites();
         InitializeTileMap(numRows, numCols, tileWidth, tileHeight);
@@ -85,7 +23,7 @@ public class TileMap : MonoBehaviour
 
     void LoadTileSprites()
     {
-        tileSprites = Resources.LoadAll<Sprite>("images/terrain_atlas");
+        tileSprites = Resources.LoadAll<Sprite>("images/terrain");
         tileSpriteMap = new Dictionary<string, Sprite>();
         if (tileSprites.Length == 0)
             Debug.Log("Failed to load sprites");
@@ -104,44 +42,105 @@ public class TileMap : MonoBehaviour
 
     void InitializeTileMap(int rows, int cols, float tileWidth, float tileHeight)
     {
-        tileMap = new Tile[numTiles];
+        tileMap = new GameObject[numTiles];
+        float currX = 0.0f;
+        float currY = 0.0f;
+        mapWidth = mapHeight = 0.0f;
+        float width = 0, height = 0;      
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
             {
-                Tile tile = new Tile();
-                SpriteRenderer sr = new SpriteRenderer();
-                Sprite spr = tileSpriteMap["dryCrackedDirtTan"];
+                GameObject tileObject = new GameObject("Tile");
+                tileObject.transform.position = new Vector3(currX,currY,0);
+                tileObject.AddComponent<Tile>();
+                tileObject.GetComponent<Tile>().Position = new Vector2(currX, currY);
+                
+               
+                int tileInt = Random.Range(1, 3);
+                switch(tileInt)
+                {
+                    case 0:
+                        tileInt = 64;
+                        break;
+                    case 1:
+                        tileInt = 106;
+                        break;
+                    case 2:
+                        tileInt = 107;
+                        break;
+                }
+                string tileID = "terrain_" + 64;
+                Sprite spr = tileSpriteMap[tileID];
+                //Debug.Log(spr);
                 if (spr == null)
                 {
                     Debug.Log("name was incorrect");
                     continue;
                 }
-                try
+                tileObject.GetComponent<Tile>().SetSprite(spr);
+                width = tileObject.GetComponent<SpriteRenderer>().bounds.size.x;
+                mapWidth += width;
+                height = tileObject.GetComponent<SpriteRenderer>().bounds.size.y;
+                mapHeight += height;
+                tileObject.GetComponent<Tile>().Size = new Vector2(width, height);
+                tileMap[GetTile(row, col)] = tileObject;
+                currX += width;
+
+                switch (Random.Range(0, 4))
                 {
-                    sr.sprite = spr;
+                    case 0:
+                        tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.DOT;
+                        break;
+                    case 1:
+                        tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Passable;
+                        break;
+                    case 2:
+                        tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Kill;
+                        break;
+                    case 3:
+                        tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                        tileObject.GetComponent<SpriteRenderer>().color *= new Vector4(1.0f, 0.25f, 0.25f, 1.0f);
+                        break;
+                    default:
+                        break;
                 }
-                catch(System.NullReferenceException ex)
-                {
-                    Debug.LogException(ex);
-                    if(sr.sprite == null)
-                        Debug.Log("sr.sprite == null");
-                    if (spr == null)
-                        Debug.Log("Somehow this was missed");
-                }
-                tile.AddSprite(sr, 0);
-                tileMap[GetTile(row, col)] = tile;
             }
+            currX = 0.0f;
+            currY -= height;
         }
+
+        Debug.Log(mapWidth + " " + mapHeight);
     }
 
-    void CheckPositionOnMap(Vector2 position)
+    public Tile.TileLayers CheckPositionOnMap(Vector2 position)
     {
-
+        foreach (GameObject tileObj in tileMap)
+        {
+            if (tileObj == null)
+                continue;
+            Tile tile = tileObj.GetComponent<Tile>();
+            SpriteRenderer renderer = tileObj.GetComponent<SpriteRenderer>();
+            if(renderer == null)
+                continue;
+            Bounds tileBounds = renderer.bounds;
+            if(tileBounds.Contains(new Vector3(position.x,position.y,0)))
+            {
+                return tile.Layer;
+            }
+        }
+        return Tile.TileLayers.OffMap;
     }
 
     int GetTile(int row, int col)
     {
         return row * numCols + col;
+    }
+
+    public void DisplayMapLayers(){
+        foreach (GameObject tileObj in tileMap)
+        {
+            Debug.Log(tileObj.GetComponent<Tile>().Layer);
+        }
     }
 }
