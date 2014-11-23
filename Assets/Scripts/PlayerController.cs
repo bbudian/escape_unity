@@ -17,13 +17,16 @@ public class PlayerController : MonoBehaviour
     }
 
     Vector3 forward, side;
-    float movementSpeed, walkSpeed, runSpeed;
+    float movementSpeed, walkSpeed, runSpeed, currentHealth, maxHealth, currentMana, maxMana, currentStamina, maxStamina;
     Animator animator;
     Directions currentDirection;
     string race;
     WeaponType equippedWeapon;
     int[] armor;
     bool isAiming;
+    string levelName;
+    string debugTileLayer;
+    BoxCollider2D environmentCollision, attackCollision;
 
     // Use this for initialization
     void Start()
@@ -31,7 +34,7 @@ public class PlayerController : MonoBehaviour
         forward = new Vector3(0, -1, 0);
         armor = new int[(int)(ArmorType.NumArmorSlots)];
         walkSpeed = 2.0f;
-        runSpeed = 5.0f;
+        runSpeed = 3.5f;
         movementSpeed = walkSpeed;
         animator = GetComponent<Animator>();
         PauseAnimation("tanHumanMWalkDown");
@@ -39,6 +42,17 @@ public class PlayerController : MonoBehaviour
         race = "tanHumanM";
         isAiming = false;
         gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "Environment";
+        levelName = "TestMap";
+        debugTileLayer = "EMPTY";
+        environmentCollision = gameObject.AddComponent<BoxCollider2D>();
+        environmentCollision.size = new Vector2(0.32f, 0.2f);
+        environmentCollision.center = new Vector2(0.0f, -0.21f);
+        environmentCollision.name = "playerEnvCol";
+        transform.Translate(1f, -1f, 0f);
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
     }
 
     // Update is called once per frame
@@ -47,12 +61,7 @@ public class PlayerController : MonoBehaviour
         Vector3 prevPosition = transform.position;
         HandleInput();
         SetCameraPos();
-        if (!CheckTile())
-        {
-            //Debug.Log("Hit impassible tile");
-            transform.position = prevPosition;
-            SetCameraPos();
-        }
+        CheckTile();
     }
 
     void SetCameraPos()
@@ -95,7 +104,10 @@ public class PlayerController : MonoBehaviour
         //Attack
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-            BeginBowAttack(currentDirection);
+            //Based on Currently equipped weapon
+            //Change to 
+            //Attack(currentDirection);
+            BeginBowAttack(currentDirection); // Use this in Attack(currentDirection)
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -209,12 +221,50 @@ public class PlayerController : MonoBehaviour
     {
         float yOffset = -0.12f;
         Vector2 position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + yOffset);
-        Bounds volume = gameObject.GetComponent<SpriteRenderer>().bounds;
-        if (GameObject.Find("TestMap").GetComponent<TileMap>().CheckPositionOnMap(position) == Tile.TileLayers.Impassable)
+        Tile.TileLayers layer = GameObject.Find(levelName).GetComponent<TileMap>().CheckPositionOnMap(position);
+        debugTileLayer = layer.ToString();
+        switch (layer)
         {
-            return false;
+            case Tile.TileLayers.Passable:
+                break;
+            case Tile.TileLayers.DOT:
+                TakeDamage(4); //Damage will be based on tile.Damage;
+                break;
+            case Tile.TileLayers.Kill:
+                TakeDamage(float.MaxValue);
+                break;
+            case Tile.TileLayers.Impassable:
+                return false;
+            case Tile.TileLayers.OffMap:
+                break;
+            default:
+                break;
         }
         return true;
+    }
+
+    void TakeDamage(float damageAmount)
+    {
+    }
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(Screen.width/2 - debugTileLayer.Length,Screen.height/2 + 30, 100, 100), debugTileLayer);
+        
+        // Make a background box
+        GUI.Box(new Rect(10, 10, 100, 90), "Loader Menu");
+
+        // Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
+        if (GUI.Button(new Rect(20, 40, 80, 20), "Level 1"))
+        {
+           // Application.LoadLevel(1);
+        }
+
+        // Make the second button.
+        if (GUI.Button(new Rect(20, 70, 80, 20), "Level 2"))
+        {
+            // Application.LoadLevel(2);
+        }
     }
 
     //void OnCollisionEnter(Collision collision)

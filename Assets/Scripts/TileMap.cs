@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class TileMap : MonoBehaviour
 {
     public GameObject[] tileMap;
+    public GameObject[] baseLayerMap;
     public Sprite[] tileSprites;
     public Dictionary<string, Sprite> tileSpriteMap;
     int numTiles, numRows, numCols;
@@ -15,7 +16,7 @@ public class TileMap : MonoBehaviour
     void Start()
     {
         numRows = numCols = 40;
-        tileWidth = tileHeight = 0.5f;
+        tileWidth = tileHeight = .32f;
         numTiles = numRows * numCols;
         LoadTileSprites();
         InitializeTileMap(numRows, numCols, tileWidth, tileHeight);
@@ -40,55 +41,76 @@ public class TileMap : MonoBehaviour
         //    Handle animated tiles
     }
 
-    void InitializeTileMap(int rows, int cols, float tileWidth, float tileHeight)
+    void CreateBaseLayer(int rows, int cols, float tileWidth, float tileHeight)
     {
-        tileMap = new GameObject[numTiles];
+        baseLayerMap = new GameObject[numTiles];
         float currX = 0.0f;
         float currY = 0.0f;
         mapWidth = mapHeight = 0.0f;
-        float width = 0, height = 0;      
+        float width = 0, height = 0;
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
             {
                 GameObject tileObject = new GameObject("Tile");
-                tileObject.transform.position = new Vector3(currX,currY,0);
+                tileObject.transform.position = new Vector3(currX, currY, 0);
                 tileObject.AddComponent<Tile>();
                 tileObject.GetComponent<Tile>().Position = new Vector2(currX, currY);
-                
-                int tileInt = Random.Range(0, 3);
-                switch(tileInt)
-                {
-                    case 0:
-                        tileInt = 112;
-                        break;
-                    case 1:
-                        tileInt = 176;
-                        break;
-                    case 2:
-                        tileInt = 177;
-                        break;
-                }
-                string tileID = "terrain_atlas_" + tileInt;
+
+                string tileID = "terrain_atlas_112";
                 Sprite spr = tileSpriteMap[tileID];
-                //Debug.Log(spr);
+                tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Passable;
                 if (spr == null)
                 {
                     Debug.Log("name was incorrect");
                     continue;
                 }
                 tileObject.GetComponent<Tile>().SetSprite(spr);
-                Debug.Log("First" + tileObject.GetComponent<SpriteRenderer>().bounds.size);
-                tileObject.GetComponent<SpriteRenderer>().bounds.size.Set(32,32,0);
-                Debug.Log(tileObject.GetComponent<SpriteRenderer>().bounds.size);
-                width = tileObject.GetComponent<SpriteRenderer>().bounds.size.x;
+                tileObject.GetComponent<SpriteRenderer>().sortingLayerName = "BaseGround";
+                tileObject.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/New Material");
+                width = tileWidth;
                 mapWidth += width;
-                height = tileObject.GetComponent<SpriteRenderer>().bounds.size.y;
+                height = tileHeight;
                 mapHeight += height;
-                tileObject.GetComponent<Tile>().Size = new Vector2(32, 32);
-                tileMap[GetTile(row, col)] = tileObject;
+                tileObject.GetComponent<Tile>().Size = new Vector2(tileWidth, tileHeight);
+                baseLayerMap[GetTile(row, col)] = tileObject;
                 currX += width;
+            }
+            currX = 0.0f;
+            currY -= height;
+        }
+    }
 
+    void InitializeTileMap(int rows, int cols, float tileWidth, float tileHeight)
+    {
+        CreateBaseLayer(rows, cols, tileWidth, tileHeight);
+
+        tileMap = new GameObject[numTiles];
+        float currX = 0.0f;
+        float currY = 0.0f;
+        float width = 0, height = 0;
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                GameObject tileObject = new GameObject("Tile");
+                tileObject.transform.position = new Vector3(currX, currY, 0);
+                tileObject.AddComponent<Tile>();
+                tileObject.GetComponent<Tile>().Position = new Vector2(currX, currY);
+
+                int tileInt = Random.Range(0, 3);
+                switch (tileInt)
+                {
+                    case 0:
+                        tileInt = 177;
+                        break;
+                    case 1:
+                        tileInt = 112;
+                        break;
+                    case 2:
+                        tileInt = 115;
+                        break;
+                }
                 switch (Random.Range(0, 4))
                 {
                     case 0:
@@ -102,11 +124,111 @@ public class TileMap : MonoBehaviour
                         break;
                     case 3:
                         tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                        tileObject.GetComponent<SpriteRenderer>().color *= new Vector4(1.0f, 0.25f, 0.25f, 1.0f);
+                        tileInt = 495;
                         break;
                     default:
                         break;
                 }
+                //Top Left
+                if (row >= 0 && row <= 2 && col == 0)
+                {
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    switch (row)
+                    {
+                        case 0:
+                            tileInt = 36;
+                            break;
+                        case 1:
+                            tileInt = 68;
+                            break;
+                        case 2:
+                            tileInt = 100;
+                            break;
+                    }
+                }
+                //Top Right
+                else if (row >= 0 && row <= 2 && col == numCols - 1)
+                {
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    switch (row)
+                    {
+                        case 0:
+                            tileInt = 35;
+                            break;
+                        case 1:
+                            tileInt = 67;
+                            break;
+                        case 2:
+                            tileInt = 99;
+                            break;
+                    }
+                }
+                //Top row
+                else if (row == 0)
+                {
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    tileInt = 65;
+                }
+                else if (row == 1)
+                {
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    tileInt = 97;
+                }
+                else if (row == 2)
+                {
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Passable;
+                    tileInt = 129;
+                }
+                //Bottom Left
+                else if ((row == numRows - 1) && (col == 0))
+                {
+                    Debug.Log("Bottom Left");
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    tileInt = 4;
+                }
+                //Bottom Right
+                else if ((row == numRows - 1) && (col == numCols - 1))
+                {
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    tileInt = 3;
+                }
+                //Left Col
+                else if (col == 0)
+                {
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    tileInt = 34;
+                }
+                //Bottom row
+                else if ((row == numRows - 1))
+                {
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    tileInt = 1;
+                }
+                //Right Col
+                else if ((col == numCols - 1))
+                {
+                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    tileInt = 32;
+                }
+
+                string tileID = "terrain_atlas_" + tileInt;
+                Sprite spr = tileSpriteMap[tileID];
+                if (spr == null)
+                {
+                    Debug.Log("name was incorrect");
+                    continue;
+                }
+                tileObject.GetComponent<Tile>().SetSprite(spr);
+                tileObject.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
+                tileObject.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/New Material");
+                width = tileWidth;
+                height = tileHeight;
+                tileObject.GetComponent<Tile>().Size = new Vector2(tileWidth, tileHeight);
+                if (tileObject.GetComponent<Tile>().Layer == Tile.TileLayers.Impassable)
+                    tileObject.GetComponent<Tile>().AddCollisionRect("rock");
+                tileMap[GetTile(row, col)] = tileObject;
+                currX += width;
+
             }
             currX = 0.0f;
             currY -= height;
@@ -123,10 +245,10 @@ public class TileMap : MonoBehaviour
                 continue;
             Tile tile = tileObj.GetComponent<Tile>();
             SpriteRenderer renderer = tileObj.GetComponent<SpriteRenderer>();
-            if(renderer == null)
+            if (renderer == null)
                 continue;
             Bounds tileBounds = renderer.bounds;
-            if(tileBounds.Contains(new Vector3(position.x,position.y,0)))
+            if (tileBounds.Contains(new Vector3(position.x, position.y, 0)))
             {
                 return tile.Layer;
             }
@@ -157,7 +279,13 @@ public class TileMap : MonoBehaviour
         return row * numCols + col;
     }
 
-    public void DisplayMapLayers(){
+    Vector2 GetTile(int tile)
+    {
+        return new Vector2(tile % numCols, tile / numRows);
+    }
+
+    public void DisplayMapLayers()
+    {
         foreach (GameObject tileObj in tileMap)
         {
             Debug.Log(tileObj.GetComponent<Tile>().Layer);

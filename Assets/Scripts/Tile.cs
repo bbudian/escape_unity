@@ -36,11 +36,6 @@ public class Tile : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().sprite = spriteImage;
     }
 
-    //public SpriteRenderer GetSprite(int slot)
-    //{
-    //    return sprites[slot];
-    //}
-
     float GetWidth()
     {
         return size.x;
@@ -63,12 +58,24 @@ public class Tile : MonoBehaviour
 
     }
 
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+    }
+
     void AddSpriteRenderer()
     {
         if (gameObject.GetComponent<SpriteRenderer>() == null)
         {
             gameObject.AddComponent<SpriteRenderer>();
             gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
-        }
+        }                           
+    }
+
+    public void AddCollisionRect(string name)
+    {
+        BoxCollider2D coll = gameObject.AddComponent<BoxCollider2D>();
+        coll.name = name;
+        coll.size.Set(size.x, size.y);
+        //Debug.Log("Added Collision Rectangle with size " + coll.size.ToString());
     }
 }
