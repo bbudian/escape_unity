@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 prevPosition = transform.position;
         HandleInput();
         SetCameraPos();
         CheckTile();

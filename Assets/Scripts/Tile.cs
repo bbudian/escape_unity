@@ -8,6 +8,20 @@ public class Tile : MonoBehaviour
     TileLayers layer;
     Vector2 size;
     Vector2 position;
+    public string name;
+    public int spriteID;
+
+    public int SpriteID
+    {
+        get { return spriteID; }
+        set { spriteID = value; }
+    }
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
 
     public Vector2 Position
     {
@@ -71,11 +85,12 @@ public class Tile : MonoBehaviour
         }                           
     }
 
-    public void AddCollisionRect(string name)
+    public void AddCollisionRect(string name,float sizeX = 32,float sizeY = 32, float centerX = 0, float centerY = 0)
     {
         BoxCollider2D coll = gameObject.AddComponent<BoxCollider2D>();
         coll.name = name;
-        coll.size.Set(size.x, size.y);
+        coll.size.Set(sizeX,sizeY);
+        coll.center.Set(centerX, centerY);
         //Debug.Log("Added Collision Rectangle with size " + coll.size.ToString());
     }
 }
