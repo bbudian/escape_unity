@@ -5137,7 +5137,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 864
+        y: 864.5
         width: 32
         height: 32
       alignment: 0
@@ -5147,7 +5147,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32.2999992
-        y: 864
+        y: 864.5
         width: 32
         height: 32
       alignment: 0
@@ -5156,8 +5156,8 @@ TextureImporter:
     - name: terrain_atlas_130
       rect:
         serializedVersion: 2
-        x: 64
-        y: 864
+        x: 63.5
+        y: 864.5
         width: 32
         height: 32
       alignment: 0

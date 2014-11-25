@@ -85,12 +85,13 @@ public class Tile : MonoBehaviour
         }                           
     }
 
-    public void AddCollisionRect(string name,float sizeX = 32,float sizeY = 32, float centerX = 0, float centerY = 0)
+    public void AddCollisionRect(string name,float sizeX = .32f,float sizeY = .32f, float centerX = 0, float centerY = 0)
     {
+        Debug.Log(sizeX + ", " + sizeY + ", " + centerX + ", " + centerY);
         BoxCollider2D coll = gameObject.AddComponent<BoxCollider2D>();
         coll.name = name;
-        coll.size.Set(sizeX,sizeY);
-        coll.center.Set(centerX, centerY);
-        //Debug.Log("Added Collision Rectangle with size " + coll.size.ToString());
+        coll.size = new Vector2(sizeX,sizeY);
+        coll.center = new Vector2(centerX, centerY);
+        Debug.Log("Added Collision Rectangle with size " + coll.size.ToString());
     }
 }

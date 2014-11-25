@@ -156,6 +156,16 @@ public class TileMap : MonoBehaviour
                     }
                 }
 
+                if ((row - 1 >= 0 && row - 2 >= 0 && col - 1 >= 0 && col - 2 >= 0) && CheckBaseLayerID(row - 1, col - 1, 33) && (
+                    CheckBaseLayerID(row, col - 1, 112) && CheckBaseLayerID(row - 2, col - 1, 112) || CheckBaseLayerID(row - 1, col, 112) && CheckBaseLayerID(row - 1, col - 2, 112)))
+                {
+                    tileID = "terrain_atlas_112";
+                    id = 112;
+                    baseLayerMap[GetTile(row - 1, col - 1)].GetComponent<Tile>().SetSprite(tileSpriteMap[tileID]);
+                    baseLayerMap[GetTile(row - 1, col - 1)].GetComponent<Tile>().Name = tileID;
+                    baseLayerMap[GetTile(row - 1, col - 1)].GetComponent<Tile>().SpriteID = id;
+                }
+
                 if (col - 1 >= 0 && col - 2 >= 0 && CheckBaseLayerID(row, col - 1, 112) && CheckBaseLayerID(row, col - 2, 33) && id == 33)
                 {
                     baseLayerMap[GetTile(row, col - 1)].GetComponent<Tile>().SetSprite(tileSpriteMap[tileID]);
@@ -167,16 +177,6 @@ public class TileMap : MonoBehaviour
                     baseLayerMap[GetTile(row - 1, col)].GetComponent<Tile>().SetSprite(tileSpriteMap[tileID]);
                     baseLayerMap[GetTile(row - 1, col)].GetComponent<Tile>().Name = tileID;
                     baseLayerMap[GetTile(row - 1, col)].GetComponent<Tile>().SpriteID = id;
-                }
-
-                if ((row - 1 >= 0 && row - 2 >= 0 && col - 1 >= 0 && col - 2 >= 0) && CheckBaseLayerID(row - 1, col - 1, 33) && (
-                    CheckBaseLayerID(row, col - 1, 112) && CheckBaseLayerID(row - 2, col - 1, 112) || CheckBaseLayerID(row - 1, col, 112) && CheckBaseLayerID(row - 1, col - 2, 112)))
-                {
-                    tileID = "terrain_atlas_112";
-                    id = 112;
-                    baseLayerMap[GetTile(row - 1, col - 1)].GetComponent<Tile>().SetSprite(tileSpriteMap[tileID]);
-                    baseLayerMap[GetTile(row - 1, col - 1)].GetComponent<Tile>().Name = tileID;
-                    baseLayerMap[GetTile(row - 1, col - 1)].GetComponent<Tile>().SpriteID = id;
                 }
 
                 //int begRow = row-6;
@@ -478,7 +478,8 @@ public class TileMap : MonoBehaviour
                 tileObject.GetComponent<Tile>().Size = new Vector2(tileWidth, tileHeight);
 
                 if (tileObject.GetComponent<Tile>().Layer == Tile.TileLayers.Impassable)
-                    AddCollisionRect(tileObject,tileInt);
+                    AddCollisionRect(ref tileObject, tileInt);
+
                 tileObject.GetComponent<Tile>().SpriteID = tileInt;
                 tileObject.GetComponent<Tile>().Name = tileID;
                 tileMap[GetTile(row, col)] = tileObject;
@@ -492,13 +493,67 @@ public class TileMap : MonoBehaviour
         Debug.Log(mapWidth + " " + mapHeight);
     }
 
-    void AddCollisionRect(GameObject obj, int id)
+    void AddCollisionRect(ref GameObject obj, int id)
     {
+        Debug.Log(id);
         switch (id)
         {
             //1,3,4,36,35,34,2,65,66,32,64,0
+            case 0:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_0", 0.12f, 0.135f, 0.1f, -0.09f);
+                break;
+            case 1:
+                obj.GetComponent<Tile>().AddCollisionRect("wall_1", 0.12f, 0.135f, 0.1f, -0.09f);
+                break;
+            case 2:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_2", 0.12f, 0.135f, -0.1f, -0.09f);
+                break;
+            case 3:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_3");
+                break;
+            case 4:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_4");
+                break;
+            case 32:
+                obj.GetComponent<Tile>().AddCollisionRect("wall_32", 0.19f, 0.32f, 0.07f);
+                break;
+            case 34:
+                obj.GetComponent<Tile>().AddCollisionRect("wall_32", 0.19f, 0.32f, -0.07f);
+                break;
+            case 35:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_35");
+                break;
+            case 36:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_36");
+                break;
+            case 64:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_64", 0.14f, 0.32f, .09f);
+                break;
+            case 65:
+                obj.GetComponent<Tile>().AddCollisionRect("wall_65");
+                break;
+            case 66:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_66", 0.14f, 0.32f, -.09f);
+                break;
+            case 99:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_99_0", 0.32f, 0.13f, 0f, .1f);
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_99_1", 0.18f, 0.195f, 0.07f, -.06f);
+                break;
+            case 100:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_100_0", 0.32f, 0.13f, 0f, .1f);
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_100_1", 0.18f, 0.195f, -0.07f, -.06f);
+                break;
+            case 128:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_128", 0.129f, 0.12f, .095f,0.1f);
+                break;
+            case 129:
+                obj.GetComponent<Tile>().AddCollisionRect("wall_129", 0.32f, 0.1f, 0f,0.11f);
+                break;
+            case 130:
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_130", 0.115f, 0.12f, -.1f,0.1f);
+                break;
         }
-        obj.GetComponent<Tile>().AddCollisionRect("rock");
+        //obj.GetComponent<Tile>().AddCollisionRect("rock");
     }
 
     public Tile.TileLayers CheckPositionOnMap(Vector2 position)
