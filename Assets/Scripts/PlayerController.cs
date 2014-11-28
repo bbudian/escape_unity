@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
         forward = new Vector3(0, -1, 0);
         armor = new int[(int)(ArmorType.NumArmorSlots)];
         walkSpeed = 2.0f;
-        runSpeed = 3.5f;
+        runSpeed = 2.5f;
         movementSpeed = walkSpeed;
         animator = GetComponent<Animator>();
         PauseAnimation("tanHumanMWalkDown");

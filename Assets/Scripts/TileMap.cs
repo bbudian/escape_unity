@@ -86,7 +86,6 @@ public class TileMap : MonoBehaviour
 
                 if (col == 0 || row == 0 || col == numCols - 1 || row == numRows - 1)
                     edge = true;
-                //terrain_atlas_112
                 string tileID = "terrain_atlas_33";
                 id = 33;
                 if (!cornerPlaced && !edge)
@@ -95,7 +94,7 @@ public class TileMap : MonoBehaviour
                     float chance = Random.Range(0, 100);
                     if (chance <= perToPlaceCorner)
                     {
-                        //If the minimum wall length is less than the remaining number of tiles don't place
+                        //If the minimum wall length is less than the remaining number of tiles don't pladsawdsawdasdsce
                         if (numCols - col >= minWallLength)
                         {
                             //Set corner and prepare for new tiles
@@ -179,56 +178,12 @@ public class TileMap : MonoBehaviour
                     baseLayerMap[GetTile(row - 1, col)].GetComponent<Tile>().SpriteID = id;
                 }
 
-                //int begRow = row-6;
-                //int begCol = col-7;
-                //if(row-6 < 0)
-                //    begRow = 0;
-                //if(begCol < 0)
-                //    begCol = 0;
-                //int endRow = row;
-                //int endCol = col-1;
-                //if(endCol < 0)
-                //    endCol = 0;
-                //for (int r = begRow; r <= row; r++)
-                //{
-                //    for (int c = begCol; c < col; c++)
-                //    {
-                //        if (CheckBaseLayerID(r, c, 33))
-                //        {
-                //            tileID = "terrain_atlas_33";
-                //            id = 33;
-                //            baseLayerMap[GetTile(r, c)].GetComponent<Tile>().SetSprite(tileSpriteMap[tileID]);
-                //            baseLayerMap[GetTile(r, c)].GetComponent<Tile>().Name = tileID;
-                //            baseLayerMap[GetTile(r, c)].GetComponent<Tile>().SpriteID = id;
-                //        }
-                //    }
-                //}
-
-
-
-                //float chance = Random.Range(0.0f, maxChance);
-                //if ( chance <= currChance)
-                //{
-                //    cornerPlaced = true;
-                //    corners[currCorner++] = new Vector2(col, row);
-                //}
-
-                //if (cornerPlaced)
-                //{
-                //    tileID += "_112";
-                //    // find current chance using formula above
-                //    //currChance = P0 * Mathf.Pow(a,col);
-                //    //Debug.Log(currChance);
-                //}
-                //else
-                //    tileID += "_33";
-                //}
-                //else
-                //{
-                //    tileID += "_33";
-                //}
-
-                //Debug.Log(tileID);
+                //Make sure the last row and column are empty
+                if (row == numRows-1 || col == numCols - 1)
+                {
+                    tileID = "terrain_atlas_33";
+                    id = 33;
+                }
 
                 Sprite spr = tileSpriteMap[tileID];
                 tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Passable;
