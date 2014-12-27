@@ -194,7 +194,7 @@ public class TileMap : MonoBehaviour
                 }
                 tileObject.GetComponent<Tile>().SetSprite(spr);
                 tileObject.GetComponent<SpriteRenderer>().sortingLayerName = "BaseGround";
-                tileObject.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/New Material");
+                tileObject.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/SpriteMat");
                 width = tileWidth;
                 mapWidth += width;
                 height = tileHeight;
@@ -427,7 +427,7 @@ public class TileMap : MonoBehaviour
                 }
                 tileObject.GetComponent<Tile>().SetSprite(spr);
                 tileObject.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
-                tileObject.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/New Material");
+                tileObject.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/SpriteMat");
                 width = tileWidth;
                 height = tileHeight;
                 tileObject.GetComponent<Tile>().Size = new Vector2(tileWidth, tileHeight);
