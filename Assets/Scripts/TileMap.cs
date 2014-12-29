@@ -84,11 +84,103 @@ public class TileMap : MonoBehaviour
     void TempCreateBaseLayer(int rows, int cols, float tileWidth, float tileHeight)
     {
 
-        //Creates Entire array with empty cells
-        CreateEmptyBaseLayer(rows, cols);
+        /* 
+         * 3 Pass Algorithm
+         *   1: Populate array with "empty" cells
+         *   2: Create initial ground template
+         *   3: Cleanup/Finalize TileID 
+         *   
+         * */
 
+        //Pass 1
 
     }
+
+    void BaseLayerPass1(int rows, int cols, float tileWidth, float tileHeight)
+    {
+        //Populate array with "empty" cells
+        baseLayerMap = new GameObject[rows * cols];
+
+        float currX = 0.0f;
+        float currY = 0.0f;
+        string tileID = "terrain_atlas_33";
+        int id = 33;
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                //Create new tile
+                GameObject tileObject = new GameObject("Tile");
+                tileObject.transform.position = new Vector3(currX, currY, 0);
+
+                //Get Sprite from map
+                Sprite spr = tileSpriteMap[tileID];
+
+                //Set Tile Data
+                Tile tile = tileObject.AddComponent<Tile>();
+                tile.Position = new Vector2(currX, currY);
+                tile.Layer = Tile.TileLayers.Passable;
+                tile.SetSprite(spr);
+                tile.Size = new Vector2(tileWidth, tileHeight);
+                tile.Name = tileID;
+                tile.SpriteID = id;
+
+                //Set Sorting layer and material for the Sprite renderer
+                SpriteRenderer spRend = tileObject.GetComponent<SpriteRenderer>();
+                spRend.sortingLayerName = "BaseGround";
+                spRend.material = Resources.Load<Material>("Materials/SpriteMat");
+
+                //Place tile onto tile map
+                baseLayerMap[GetTile(row, col)] = tileObject;
+
+                //Move to next column
+                currX += tileWidth;
+            }
+
+            //Move to beginning of next row
+            currX = 0.0f;
+            currY -= tileHeight;
+        }
+    }
+
+    void BaseLayerPass2(int numRows, int numCols)
+    {
+        int start = 0, min = 0, max = 0, length = 0;
+        for (int row = 1; row < numRows - 1; row++)
+        {
+            if (row % 3 == 0 || row == 1)
+            {
+                //Create min and max for random length range
+               min = (int)(numCols * 0.5);
+               max = (int)(numCols * 0.9);
+
+                //Calculate length
+                length = Random.Range(min, max + 1);
+                Debug.Log("min: " + min + " max: " + max + " length: " + length);
+
+                //Calculate starting column
+                start = Random.Range(1, (numCols - length));
+            }
+            
+            for (int col = start; col < (length + start); col++)
+            {
+                //Store local copy of tile 
+                GameObject tileObj = baseLayerMap[GetTile(row, col)];
+                Tile tile = tileObj.GetComponent<Tile>();
+
+                //Set tile to ground sprite
+                tile.Name = "terrain_atlas_112";
+                tile.SpriteID = 112;
+                tile.SetSprite(tileSpriteMap[tile.Name]);
+            }
+        }
+    }
+
+    void BaseLayerPass3(int rows, int cols, float tileWidth, float tileHeight)
+    {
+
+    }
+
 
     void CreateBaseLayer(int rows, int cols, float tileWidth, float tileHeight)
     {
@@ -266,7 +358,10 @@ public class TileMap : MonoBehaviour
     void InitializeTileMap(int rows, int cols, float tileWidth, float tileHeight)
     {
         string emptyCell = "terrain_atlas_33";
-        CreateBaseLayer(rows, cols, tileWidth, tileHeight);
+
+        BaseLayerPass1(rows, cols, tileWidth, tileHeight);
+        BaseLayerPass2(rows, cols);
+        //CreateBaseLayer(rows, cols, tileWidth, tileHeight);
 
         //return;
 
@@ -330,7 +425,7 @@ public class TileMap : MonoBehaviour
                 else if (row + 1 < numRows && col + 1 < numCols && CheckBaseLayerName(row + 1, col + 1, emptyCell))
                     tileInt = 0;
 
-                
+
 
                 if (row - 1 >= 0 && CheckTileID(row - 1, col, 36))
                     tileInt = 100;
@@ -512,7 +607,7 @@ public class TileMap : MonoBehaviour
                 obj.GetComponent<Tile>().AddCollisionRect("corner_wall_0", 0.12f, 0.135f, 0.1f, -0.09f);
                 break;
             case 1:
-                obj.GetComponent<Tile>().AddCollisionRect("wall_1", 0.12f, 0.135f, 0.1f, -0.09f);
+                obj.GetComponent<Tile>().AddCollisionRect("wall_1", 0.32f, 0.1f, 0.1f, -0.05f);
                 break;
             case 2:
                 obj.GetComponent<Tile>().AddCollisionRect("corner_wall_2", 0.12f, 0.135f, -0.1f, -0.09f);

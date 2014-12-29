@@ -31,3 +31,15 @@ C:\Users\Benjamin\Desktop\GitHubSVN Escape\trunk\Temp\bin\Debug\ICSharpCode.NRef
 C:\Users\Benjamin\Desktop\GitHubSVN Escape\trunk\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
 C:\Users\Benjamin\Desktop\GitHubSVN Escape\trunk\obj\Debug\Assembly-CSharp.dll
 C:\Users\Benjamin\Desktop\GitHubSVN Escape\trunk\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Benjamin\Desktop\SVNs\Escape\Temp\bin\Debug\Assembly-CSharp.dll
+C:\Users\Benjamin\Desktop\SVNs\Escape\Temp\bin\Debug\Assembly-CSharp.pdb
+C:\Users\Benjamin\Desktop\SVNs\Escape\Temp\bin\Debug\UnityEditor.dll
+C:\Users\Benjamin\Desktop\SVNs\Escape\Temp\bin\Debug\UnityEngine.dll
+C:\Users\Benjamin\Desktop\SVNs\Escape\Temp\bin\Debug\UnityEngine.UI.dll
+C:\Users\Benjamin\Desktop\SVNs\Escape\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\Benjamin\Desktop\SVNs\Escape\Temp\bin\Debug\nunit.framework.dll
+C:\Users\Benjamin\Desktop\SVNs\Escape\Temp\bin\Debug\Unity.DataContract.dll
+C:\Users\Benjamin\Desktop\SVNs\Escape\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\Benjamin\Desktop\SVNs\Escape\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+C:\Users\Benjamin\Desktop\SVNs\Escape\obj\Debug\Assembly-CSharp.dll
+C:\Users\Benjamin\Desktop\SVNs\Escape\obj\Debug\Assembly-CSharp.pdb
