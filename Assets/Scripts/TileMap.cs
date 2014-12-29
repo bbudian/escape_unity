@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class TileMap : MonoBehaviour
 {
     public GameObject[] tileMap;
@@ -41,9 +42,60 @@ public class TileMap : MonoBehaviour
         //    Handle animated tiles
     }
 
+    void CreateEmptyBaseLayer(int rows, int cols)
+    {
+        baseLayerMap = new GameObject[rows * cols];
+        float currX = 0.0f;
+        float currY = 0.0f;
+        mapWidth = mapHeight = 0.0f;
+        float width = 0, height = 0;
+        string tileID = "terrain_atlas_33";
+        int id = 33;
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                GameObject tileObject = new GameObject("Tile");
+                tileObject.transform.position = new Vector3(currX, currY, 0);
+                tileObject.AddComponent<Tile>();
+                tileObject.GetComponent<Tile>().Position = new Vector2(currX, currY);
+
+                Sprite spr = tileSpriteMap[tileID];
+                tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Passable;
+                tileObject.GetComponent<Tile>().SetSprite(spr);
+                tileObject.GetComponent<SpriteRenderer>().sortingLayerName = "BaseGround";
+                tileObject.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/SpriteMat");
+                width = tileWidth;
+                mapWidth += width;
+                height = tileHeight;
+                mapHeight += height;
+                tileObject.GetComponent<Tile>().Size = new Vector2(tileWidth, tileHeight);
+                baseLayerMap[GetTile(row, col)] = tileObject;
+                tileObject.GetComponent<Tile>().Name = tileID;
+                tileObject.GetComponent<Tile>().SpriteID = id;
+                currX += width;
+            }
+            currX = 0.0f;
+            currY -= height;
+        }
+
+    }
+
+    void TempCreateBaseLayer(int rows, int cols, float tileWidth, float tileHeight)
+    {
+
+        //Creates Entire array with empty cells
+        CreateEmptyBaseLayer(rows, cols);
+
+
+    }
+
     void CreateBaseLayer(int rows, int cols, float tileWidth, float tileHeight)
     {
-        baseLayerMap = new GameObject[numTiles];
+        //Creates entire array with empty cells
+        //CreateEmptyBaseLayer(rows, cols);
+
+        baseLayerMap = new GameObject[rows * cols];
         float currX = 0.0f;
         float currY = 0.0f;
         mapWidth = mapHeight = 0.0f;
@@ -179,7 +231,7 @@ public class TileMap : MonoBehaviour
                 }
 
                 //Make sure the last row and column are empty
-                if (row == numRows-1 || col == numCols - 1)
+                if (row == numRows - 1 || col == numCols - 1)
                 {
                     tileID = "terrain_atlas_33";
                     id = 33;
@@ -189,7 +241,7 @@ public class TileMap : MonoBehaviour
                 tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Passable;
                 if (spr == null)
                 {
-                    Debug.Log("name was incorrect");
+                    Debug.LogError("name was incorrect");
                     continue;
                 }
                 tileObject.GetComponent<Tile>().SetSprite(spr);
@@ -277,6 +329,8 @@ public class TileMap : MonoBehaviour
                 // If the cell down and to the right one is empty make left  down facing corner
                 else if (row + 1 < numRows && col + 1 < numCols && CheckBaseLayerName(row + 1, col + 1, emptyCell))
                     tileInt = 0;
+
+                
 
                 if (row - 1 >= 0 && CheckTileID(row - 1, col, 36))
                     tileInt = 100;
@@ -499,13 +553,13 @@ public class TileMap : MonoBehaviour
                 obj.GetComponent<Tile>().AddCollisionRect("corner_wall_100_1", 0.18f, 0.195f, -0.07f, -.06f);
                 break;
             case 128:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_128", 0.129f, 0.12f, .095f,0.1f);
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_128", 0.129f, 0.12f, .095f, 0.1f);
                 break;
             case 129:
-                obj.GetComponent<Tile>().AddCollisionRect("wall_129", 0.32f, 0.1f, 0f,0.11f);
+                obj.GetComponent<Tile>().AddCollisionRect("wall_129", 0.32f, 0.1f, 0f, 0.11f);
                 break;
             case 130:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_130", 0.115f, 0.12f, -.1f,0.1f);
+                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_130", 0.115f, 0.12f, -.1f, 0.1f);
                 break;
         }
         //obj.GetComponent<Tile>().AddCollisionRect("rock");
