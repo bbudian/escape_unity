@@ -81,23 +81,10 @@ public class TileMap : MonoBehaviour
 
     }
 
-    void TempCreateBaseLayer(int rows, int cols, float tileWidth, float tileHeight)
-    {
-
-        /* 
-         * 3 Pass Algorithm
-         *   1: Populate array with "empty" cells
-         *   2: Create initial ground template
-         *   3: Cleanup/Finalize TileID 
-         *   
-         * */
-
-        //Pass 1
-
-    }
-
     void BaseLayerPass1(int rows, int cols, float tileWidth, float tileHeight)
     {
+        //-- PASS 1 -- Populate array with empty cells
+
         //Populate array with "empty" cells
         baseLayerMap = new GameObject[rows * cols];
 
@@ -145,10 +132,16 @@ public class TileMap : MonoBehaviour
 
     void BaseLayerPass2(int numRows, int numCols)
     {
+        //-- PASS 2 -- Generate ground tiles
+
+        //Initialization
         int start = 0, min = 0, max = 0, length = 0;
+
+        //Algorithm ignores all edges
         for (int row = 1; row < numRows - 1; row++)
         {
-            if (row % 3 == 0 || row == 1)
+            //This allows for 3 rows to be the same to allow proper tile placement
+            if (row % 3 == 0)
             {
                 //Create min and max for random length range
                min = (int)(numCols * 0.5);
@@ -176,194 +169,15 @@ public class TileMap : MonoBehaviour
         }
     }
 
-    void BaseLayerPass3(int rows, int cols, float tileWidth, float tileHeight)
-    {
 
-    }
-
-
-    void CreateBaseLayer(int rows, int cols, float tileWidth, float tileHeight)
-    {
-        //Creates entire array with empty cells
-        //CreateEmptyBaseLayer(rows, cols);
-
-        baseLayerMap = new GameObject[rows * cols];
-        float currX = 0.0f;
-        float currY = 0.0f;
-        mapWidth = mapHeight = 0.0f;
-        float width = 0, height = 0;
-
-        //Get Max Corners
-
-        //// Using exponential Formula y = P0*a^x || y = P0 * pow(a,x);
-        //float lowestChance = 1.0f;
-        //float maxChance = 100.0f;
-
-        //// Find a using formula : a = (y2/y1)^(1/(x2-x1)) where x = (0,lowestChance) and y = (numCols,100)
-        //float a = Mathf.Pow((maxChance / lowestChance), 1.0f / numCols);
-        //Debug.Log(a);
-
-        //// Find P0 using formula : P0 = 100/a^numCol
-        //float P0 = maxChance / (Mathf.Pow(a, numCols));
-        //Debug.Log(P0);
-
-        //float incRateRow = (maxChance - lowestChance) / numRows;
-
-
-        bool cornerPlaced = false;
-        int minWallLength = (int)(numCols * 0.35f);
-        int wallLength = 0;
-        int currWallLength = 0;
-        float perToPlaceCorner = 30;
-        int id = -1;
-
-        for (int row = 0; row < rows; row++)
-        {
-            for (int col = 0; col < cols; col++)
-            {
-                GameObject tileObject = new GameObject("Tile");
-                tileObject.transform.position = new Vector3(currX, currY, 0);
-                tileObject.AddComponent<Tile>();
-                tileObject.GetComponent<Tile>().Position = new Vector2(currX, currY);
-
-                bool edge = false;
-
-                if (col == 0 || row == 0 || col == numCols - 1 || row == numRows - 1)
-                    edge = true;
-                string tileID = "terrain_atlas_33";
-                id = 33;
-                if (!cornerPlaced && !edge)
-                {
-                    //Determine the chance to place a corner here
-                    float chance = Random.Range(0, 100);
-                    if (chance <= perToPlaceCorner)
-                    {
-                        //If the minimum wall length is less than the remaining number of tiles don't pladsawdsawdasdsce
-                        if (numCols - col >= minWallLength)
-                        {
-                            //Set corner and prepare for new tiles
-                            cornerPlaced = true;
-                            currWallLength = 0;
-                            tileID = "terrain_atlas_112";
-                            id = 112;
-                            //Debug.Log("\nFirst Corner Placed\n");
-                            wallLength = Random.Range(minWallLength, numCols - col);
-                        }
-                    }
-                }
-                else if (!edge)
-                {
-                    currWallLength++;
-                    tileID = "terrain_atlas_112";
-                    id = 112;
-
-                    if (currWallLength == wallLength)
-                    {
-                        cornerPlaced = false;
-                        currWallLength = 0;
-                        //Debug.Log("\nLast Corner Placed\n");
-                    }
-                }
-                //Check to see if row width is at least 4 tiles
-                if (row - 1 >= 0 && CheckBaseLayerID(row - 1, col, 112))
-                {
-                    if (row - 2 >= 0 && CheckBaseLayerID(row - 2, col, 112))
-                    {
-                        if (row - 3 >= 0 && CheckBaseLayerID(row - 3, col, 112))
-                        {
-                            if (row - 4 >= 0 && CheckBaseLayerID(row - 4, col, 112))
-                            {
-                                if (row - 5 >= 0 && CheckBaseLayerID(row - 5, col, 112)) { }
-                                else
-                                {
-                                    tileID = "terrain_atlas_112";
-                                    id = 112;
-                                }
-                            }
-                            else
-                            {
-                                tileID = "terrain_atlas_112";
-                                id = 112;
-                            }
-                        }
-                        else
-                        {
-                            tileID = "terrain_atlas_112";
-                            id = 112;
-                        }
-                    }
-                    else
-                    {
-                        tileID = "terrain_atlas_112";
-                        id = 112;
-                    }
-                }
-
-                if ((row - 1 >= 0 && row - 2 >= 0 && col - 1 >= 0 && col - 2 >= 0) && CheckBaseLayerID(row - 1, col - 1, 33) && (
-                    CheckBaseLayerID(row, col - 1, 112) && CheckBaseLayerID(row - 2, col - 1, 112) || CheckBaseLayerID(row - 1, col, 112) && CheckBaseLayerID(row - 1, col - 2, 112)))
-                {
-                    tileID = "terrain_atlas_112";
-                    id = 112;
-                    baseLayerMap[GetTile(row - 1, col - 1)].GetComponent<Tile>().SetSprite(tileSpriteMap[tileID]);
-                    baseLayerMap[GetTile(row - 1, col - 1)].GetComponent<Tile>().Name = tileID;
-                    baseLayerMap[GetTile(row - 1, col - 1)].GetComponent<Tile>().SpriteID = id;
-                }
-
-                if (col - 1 >= 0 && col - 2 >= 0 && CheckBaseLayerID(row, col - 1, 112) && CheckBaseLayerID(row, col - 2, 33) && id == 33)
-                {
-                    baseLayerMap[GetTile(row, col - 1)].GetComponent<Tile>().SetSprite(tileSpriteMap[tileID]);
-                    baseLayerMap[GetTile(row, col - 1)].GetComponent<Tile>().Name = tileID;
-                    baseLayerMap[GetTile(row, col - 1)].GetComponent<Tile>().SpriteID = id;
-                }
-                if (row - 1 >= 0 && row - 2 >= 0 && CheckBaseLayerID(row - 1, col, 112) && CheckBaseLayerID(row - 2, col, 33) && id == 33)
-                {
-                    baseLayerMap[GetTile(row - 1, col)].GetComponent<Tile>().SetSprite(tileSpriteMap[tileID]);
-                    baseLayerMap[GetTile(row - 1, col)].GetComponent<Tile>().Name = tileID;
-                    baseLayerMap[GetTile(row - 1, col)].GetComponent<Tile>().SpriteID = id;
-                }
-
-                //Make sure the last row and column are empty
-                if (row == numRows - 1 || col == numCols - 1)
-                {
-                    tileID = "terrain_atlas_33";
-                    id = 33;
-                }
-
-                Sprite spr = tileSpriteMap[tileID];
-                tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Passable;
-                if (spr == null)
-                {
-                    Debug.LogError("name was incorrect");
-                    continue;
-                }
-                tileObject.GetComponent<Tile>().SetSprite(spr);
-                tileObject.GetComponent<SpriteRenderer>().sortingLayerName = "BaseGround";
-                tileObject.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/SpriteMat");
-                width = tileWidth;
-                mapWidth += width;
-                height = tileHeight;
-                mapHeight += height;
-                tileObject.GetComponent<Tile>().Size = new Vector2(tileWidth, tileHeight);
-                baseLayerMap[GetTile(row, col)] = tileObject;
-                tileObject.GetComponent<Tile>().Name = tileID;
-                tileObject.GetComponent<Tile>().SpriteID = id;
-                currX += width;
-            }
-            currX = 0.0f;
-            currY -= height;
-
-        }
-    }
 
     void InitializeTileMap(int rows, int cols, float tileWidth, float tileHeight)
     {
         string emptyCell = "terrain_atlas_33";
 
+        //Create Base layer (2 Pass)
         BaseLayerPass1(rows, cols, tileWidth, tileHeight);
         BaseLayerPass2(rows, cols);
-        //CreateBaseLayer(rows, cols, tileWidth, tileHeight);
-
-        //return;
 
         tileMap = new GameObject[numTiles];
         float currX = 0.0f;
@@ -373,14 +187,10 @@ public class TileMap : MonoBehaviour
         {
             for (int col = 0; col < cols; col++)
             {
-
-
-
                 GameObject tileObject = new GameObject("Tile");
                 tileObject.transform.position = new Vector3(currX, currY, 0);
-                tileObject.AddComponent<Tile>();
-                tileObject.GetComponent<Tile>().Position = new Vector2(currX, currY);
 
+                Tile tile = tileObject.AddComponent<Tile>();
 
                 int tileInt = 235;
 
@@ -425,8 +235,6 @@ public class TileMap : MonoBehaviour
                 else if (row + 1 < numRows && col + 1 < numCols && CheckBaseLayerName(row + 1, col + 1, emptyCell))
                     tileInt = 0;
 
-
-
                 if (row - 1 >= 0 && CheckTileID(row - 1, col, 36))
                     tileInt = 100;
                 if (row - 1 >= 0 && CheckTileID(row - 1, col, 35))
@@ -438,20 +246,10 @@ public class TileMap : MonoBehaviour
                 if (row - 1 >= 0 && CheckTileID(row - 1, col, 64))
                     tileInt = 128;
 
-
-
                 if (tileInt == 0 || tileInt == 1 || tileInt == 2 || tileInt == 3 || tileInt == 4 || tileInt == 32 || tileInt == 34 || tileInt == 35 || tileInt == 36 ||
                    tileInt == 64 || tileInt == 65 || tileInt == 66 || tileInt == 99 || tileInt == 100)
-                    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
+                    tile.Layer = Tile.TileLayers.Impassable;
 
-
-                //Adjusting all Layer cells
-                ////If both cells on either side of current are empty make current empty
-                //if ((col - 1 >= 0 && col + 1 < numCols && CheckBaseLayerID(row, col - 1, 33) && CheckBaseLayerID(row, col + 1, 33)) ||
-                //    (row - 1 >= 0 && row + 1 < numRows && CheckBaseLayerID(row - 1, col, 33) && CheckBaseLayerID(row + 1, col, 33)))
-                //{
-                //    tileInt = 33;
-                //}
 
 
                 //int tileInt = Random.Range(0, 3);
@@ -574,87 +372,101 @@ public class TileMap : MonoBehaviour
                     Debug.Log("name was incorrect");
                     continue;
                 }
-                tileObject.GetComponent<Tile>().SetSprite(spr);
-                tileObject.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
-                tileObject.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/SpriteMat");
+
+                if (tile == null)
+                    Debug.LogError("Tile Component is invalid");
+                else
+                {
+                    tile.Position = new Vector2(currX, currY);
+                    tile.SetSprite(spr);
+                    tile.Size = new Vector2(tileWidth, tileHeight);
+                    tile.SpriteID = tileInt;
+                    tile.Name = tileID;
+                    if (tile.Layer == Tile.TileLayers.Impassable)
+                        AddCollisionRect(ref tileObject, tileInt);
+                }
+
+                SpriteRenderer spRend = tileObject.GetComponent<SpriteRenderer>();
+                if (spRend == null)
+                    Debug.LogError("Tile Sprite Renderer is not valid");
+                else
+                {
+                    spRend.sortingLayerName = "Ground";
+                    spRend.material = Resources.Load<Material>("Materials/SpriteMat");
+                }
+                
+
+                tileMap[GetTile(row, col)] = tileObject;
+
                 width = tileWidth;
                 height = tileHeight;
-                tileObject.GetComponent<Tile>().Size = new Vector2(tileWidth, tileHeight);
 
-                if (tileObject.GetComponent<Tile>().Layer == Tile.TileLayers.Impassable)
-                    AddCollisionRect(ref tileObject, tileInt);
-
-                tileObject.GetComponent<Tile>().SpriteID = tileInt;
-                tileObject.GetComponent<Tile>().Name = tileID;
-                tileMap[GetTile(row, col)] = tileObject;
                 currX += width;
-
             }
             currX = 0.0f;
             currY -= height;
         }
-
-        Debug.Log(mapWidth + " " + mapHeight);
     }
 
     void AddCollisionRect(ref GameObject obj, int id)
     {
-        Debug.Log(id);
+        Tile tile = obj.GetComponent<Tile>();
+
         switch (id)
         {
             //1,3,4,36,35,34,2,65,66,32,64,0
             case 0:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_0", 0.12f, 0.135f, 0.1f, -0.09f);
+                tile.AddCollisionRect("corner_wall_0", 0.12f, 0.135f, 0.1f, -0.09f);
                 break;
             case 1:
-                obj.GetComponent<Tile>().AddCollisionRect("wall_1", 0.32f, 0.1f, 0.1f, -0.05f);
+                tile.AddCollisionRect("wall_1", 0.32f, 0.1f, 0.1f, -0.05f);
                 break;
             case 2:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_2", 0.12f, 0.135f, -0.1f, -0.09f);
+                tile.AddCollisionRect("corner_wall_2", 0.12f, 0.135f, -0.1f, -0.09f);
                 break;
             case 3:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_3");
+                tile.AddCollisionRect("corner_wall_3");
                 break;
             case 4:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_4");
+                tile.AddCollisionRect("corner_wall_4");
                 break;
             case 32:
-                obj.GetComponent<Tile>().AddCollisionRect("wall_32", 0.19f, 0.32f, 0.07f);
+                tile.AddCollisionRect("wall_32", 0.19f, 0.32f, 0.07f);
                 break;
             case 34:
-                obj.GetComponent<Tile>().AddCollisionRect("wall_32", 0.19f, 0.32f, -0.07f);
+                tile.AddCollisionRect("wall_32", 0.19f, 0.32f, -0.07f);
                 break;
             case 35:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_35");
+                tile.AddCollisionRect("corner_wall_35");
                 break;
             case 36:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_36");
+                tile.AddCollisionRect("corner_wall_36");
                 break;
             case 64:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_64", 0.14f, 0.32f, .09f);
+                tile.AddCollisionRect("corner_wall_64", 0.14f, 0.32f, .09f);
                 break;
             case 65:
-                obj.GetComponent<Tile>().AddCollisionRect("wall_65");
+                tile.AddCollisionRect("wall_65");
                 break;
             case 66:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_66", 0.14f, 0.32f, -.09f);
+                tile.AddCollisionRect("corner_wall_66", 0.14f, 0.32f, -.09f);
                 break;
             case 99:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_99_0", 0.32f, 0.13f, 0f, .1f);
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_99_1", 0.18f, 0.195f, 0.07f, -.06f);
+                tile.AddCollisionRect("corner_wall_99_0", 0.32f, 0.13f, 0f, .1f);
+                tile.AddCollisionRect("corner_wall_99_1", 0.18f, 0.195f, 0.07f, -.06f);
                 break;
             case 100:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_100_0", 0.32f, 0.13f, 0f, .1f);
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_100_1", 0.18f, 0.195f, -0.07f, -.06f);
+                tile.AddCollisionRect("corner_wall_100_0", 0.32f, 0.13f, 0f, .1f);
+                tile.AddCollisionRect("corner_wall_100_1", 0.18f, 0.195f, -0.07f, -.06f);
                 break;
             case 128:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_128", 0.129f, 0.12f, .095f, 0.1f);
+                tile.AddCollisionRect("corner_wall_128", 0.129f, 0.12f, .095f, 0.1f);
                 break;
             case 129:
-                obj.GetComponent<Tile>().AddCollisionRect("wall_129", 0.32f, 0.1f, 0f, 0.11f);
+                tile.AddCollisionRect("wall_129", 0.32f, 0.1f, 0f, 0.11f);
                 break;
             case 130:
-                obj.GetComponent<Tile>().AddCollisionRect("corner_wall_130", 0.115f, 0.12f, -.1f, 0.1f);
+                tile.AddCollisionRect("corner_wall_130", 0.115f, 0.12f, -.1f, 0.1f);
                 break;
         }
         //obj.GetComponent<Tile>().AddCollisionRect("rock");
