@@ -5,15 +5,32 @@ public class PlayerController : MonoBehaviour
 {
     enum WeaponType
     {
-        Sword, Bow, Spear
+        Sword, Bow, Spear, NumWeaponTypes
     }
     enum ArmorType
     {
-        Head, Chest, Legs, Feet, Hands, Shoulders, NumArmorSlots
+        Head, Chest, Legs, Feet, Hands, Shoulders, None, NumArmorSlots
     }
     enum Directions
     {
-        Left, Up, Right, Down
+        Left, Up, Right, Down, NumDirections
+    }
+
+    struct Armor
+    {
+        ArmorType type;
+        int defenseValue;
+    }
+
+    struct Weapon
+    {
+        WeaponType type;
+        float minAttkVal, maxAttkVal;
+    }
+
+    struct CurrentlyEquipped
+    {
+        Armor head, chest, legs, feet, hands, shoulders;
     }
 
     Vector3 forward, side;
@@ -140,6 +157,19 @@ public class PlayerController : MonoBehaviour
         {
             GameObject.Find("TestMap").GetComponent<TileMap>().DisplayMapLayers();
         }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            GetComponent<BoxCollider2D>().enabled = !GetComponent<BoxCollider2D>().enabled;
+            //if (currState == CollisionDetectionMode2D.Continuous)
+            // {
+            //     rigidbody2D.collisionDetectionMode = CollisionDetectionMode2D.None;
+            //     Debug.Log("Collision Disabled...");
+            // }
+            // else{
+            //     rigidbody2D.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            //     Debug.Log("Collision Enabled...");
+            // }
+        }
 
     }
 
@@ -248,15 +278,15 @@ public class PlayerController : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.Label(new Rect(Screen.width/2 - debugTileLayer.Length,Screen.height/2 + 30, 100, 100), debugTileLayer);
-        
+        GUI.Label(new Rect(Screen.width / 2 - debugTileLayer.Length, Screen.height / 2 + 30, 100, 100), debugTileLayer);
+
         // Make a background box
         GUI.Box(new Rect(10, 10, 100, 90), "Loader Menu");
 
         // Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
         if (GUI.Button(new Rect(20, 40, 80, 20), "Level 1"))
         {
-           // Application.LoadLevel(1);
+            // Application.LoadLevel(1);
         }
 
         // Make the second button.

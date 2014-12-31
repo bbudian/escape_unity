@@ -169,8 +169,6 @@ public class TileMap : MonoBehaviour
         }
     }
 
-
-
     void InitializeTileMap(int rows, int cols, float tileWidth, float tileHeight)
     {
         string emptyCell = "terrain_atlas_33";
@@ -249,121 +247,6 @@ public class TileMap : MonoBehaviour
                 if (tileInt == 0 || tileInt == 1 || tileInt == 2 || tileInt == 3 || tileInt == 4 || tileInt == 32 || tileInt == 34 || tileInt == 35 || tileInt == 36 ||
                    tileInt == 64 || tileInt == 65 || tileInt == 66 || tileInt == 99 || tileInt == 100)
                     tile.Layer = Tile.TileLayers.Impassable;
-
-
-
-                //int tileInt = Random.Range(0, 3);
-                //switch (tileInt)
-                //{
-                //    case 0:
-                //        tileInt = 177;
-                //        break;
-                //    case 1:
-                //        tileInt = 112;
-                //        break;
-                //    case 2:
-                //        tileInt = 115;
-                //        break;
-                //}
-                //switch (Random.Range(0, 4))
-                //{
-                //    case 0:
-                //        tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.DOT;
-                //        break;
-                //    case 1:
-                //        tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Passable;
-                //        break;
-                //    case 2:
-                //        tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Kill;
-                //        break;
-                //    case 3:
-                //        tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //        tileInt = 495;
-                //        break;
-                //    default:
-                //        break;
-                //}
-                ////Top Left
-                //if (row >= 0 && row <= 2 && col == 0)
-                //{
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //    switch (row)
-                //    {
-                //        case 0:
-                //            tileInt = 36;
-                //            break;
-                //        case 1:
-                //            tileInt = 68;
-                //            break;
-                //        case 2:
-                //            tileInt = 100;
-                //            break;
-                //    }
-                //}
-                ////Top Right
-                //else if (row >= 0 && row <= 2 && col == numCols - 1)
-                //{
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //    switch (row)
-                //    {
-                //        case 0:
-                //            tileInt = 35;
-                //            break;
-                //        case 1:
-                //            tileInt = 67;
-                //            break;
-                //        case 2:
-                //            tileInt = 99;
-                //            break;
-                //    }
-                //}
-                ////Top row
-                //else if (row == 0)
-                //{
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //    tileInt = 65;
-                //}
-                //else if (row == 1)
-                //{
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //    tileInt = 97;
-                //}
-                //else if (row == 2)
-                //{
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Passable;
-                //    tileInt = 129;
-                //}
-                ////Bottom Left
-                //else if ((row == numRows - 1) && (col == 0))
-                //{
-                //    Debug.Log("Bottom Left");
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //    tileInt = 4;
-                //}
-                ////Bottom Right
-                //else if ((row == numRows - 1) && (col == numCols - 1))
-                //{
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //    tileInt = 3;
-                //}
-                ////Left Col
-                //else if (col == 0)
-                //{
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //    tileInt = 34;
-                //}
-                ////Bottom row
-                //else if ((row == numRows - 1))
-                //{
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //    tileInt = 1;
-                //}
-                ////Right Col
-                //else if ((col == numCols - 1))
-                //{
-                //    tileObject.GetComponent<Tile>().Layer = Tile.TileLayers.Impassable;
-                //    tileInt = 32;
-                //}
 
                 string tileID = "terrain_atlas_" + tileInt;
                 Sprite spr = tileSpriteMap[tileID];
